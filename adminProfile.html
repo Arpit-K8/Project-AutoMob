@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile Settings - MechXpress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'slide-in-right': 'slideInRight 0.5s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        /* For the file input button */
+        .file-input-button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <img src="Image/Logo.png" alt="Logo" class="h-8 w-auto object-contain">
+                    <span class="text-xl font-bold italic text-gray-900">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="adminPortal.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Admin Dashboard</a>
+                    <a href="adminPortal.html#bookings" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Bookings</a>
+                    <a href="adminPortal.html#offers" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Offers</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="hidden xl:block text-gray-700">
+                        <span class="text-sm">Admin, <span id="adminName" class="font-semibold text-blue-600">Admin</span></span>
+                    </div>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all" onclick="toggleDropdown()">
+                            <div id="adminAvatarContainer" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
+                                <span class="text-white font-semibold text-sm">AD</span>
+                            </div>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <a href="adminProfile.html" class="block px-4 py-2 text-blue-600 bg-blue-50 font-semibold transition-colors">Admin Settings</a>
+                            <a href="adminPortal.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Dashboard</a>
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-10 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Admin Profile Settings</h1>
+            <p class="text-xl text-gray-600">Manage your admin account information and preferences.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 animate-fade-in-up" style="animation-delay: 0.2s;">
+
+            <div class="lg:col-span-1">
+                <div class="bg-white p-8 rounded-xl shadow-lg text-center h-full">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Admin Photo</h3>
+                    <div class="relative w-40 h-40 mx-auto mb-6">
+                        <img id="adminImagePreview" src="https://via.placeholder.com/160" alt="Admin Preview" class="w-full h-full rounded-full object-cover border-4 border-gray-100 shadow-md">
+                        <label for="imageUpload" class="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-transform transform hover:scale-110">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </label>
+                    </div>
+                    <input type="file" id="imageUpload" class="hidden" accept="image/png, image/jpeg">
+                    <button onclick="document.getElementById('imageUpload').click()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg transition-all duration-300">
+                        Change Photo
+                    </button>
+                    <p class="text-xs text-gray-500 mt-4">JPG or PNG. Max size of 2MB.</p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div class="bg-white p-8 rounded-xl shadow-lg h-full">
+                    <form id="adminForm" novalidate>
+                        <div class="space-y-8">
+                            <div>
+                                <label for="adminName" class="block text-sm font-bold text-gray-800 mb-1">Admin Name</label>
+                                <input type="text" id="adminName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Enter admin name">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-bold text-gray-800 mb-1">Email Address</label>
+                                <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Enter admin email">
+                            </div>
+
+                            <div>
+                                <label for="phone" class="block text-sm font-bold text-gray-800 mb-1">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Enter admin phone number">
+                            </div>
+
+                            <div>
+                                <label for="role" class="block text-sm font-bold text-gray-800 mb-1">Admin Role</label>
+                                <select id="role" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                    <option value="super-admin">Super Admin</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="manager">Manager</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="permissions" class="block text-sm font-bold text-gray-800 mb-1">Permissions</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="manageBookings" class="mr-2" checked>
+                                        <span class="text-sm text-gray-700">Manage Bookings</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="manageOffers" class="mr-2" checked>
+                                        <span class="text-sm text-gray-700">Manage Offers</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="viewAnalytics" class="mr-2" checked>
+                                        <span class="text-sm text-gray-700">View Analytics</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="manageUsers" class="mr-2">
+                                        <span class="text-sm text-gray-700">Manage Users</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-10 pt-6 border-t border-gray-200 flex justify-end items-center gap-4">
+                             <button type="button" class="text-gray-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+                                Discard
+                            </button>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2025 MechXpress. All rights reserved. | Admin Portal</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast" class="fixed top-20 right-5 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hidden animate-slide-in-right">
+        <p>Admin profile updated successfully!</p>
+    </div>
+
+    <script>
+        // --- DATA MANAGEMENT ---
+        function getAdminData() {
+            const defaultAdmin = {
+                name: "Admin User",
+                email: "admin@mechxpress.com",
+                phone: "+91 89456 12378",
+                role: "super-admin",
+                permissions: {
+                    manageBookings: true,
+                    manageOffers: true,
+                    viewAnalytics: true,
+                    manageUsers: false
+                },
+                profileImage: "https://via.placeholder.com/160"
+            };
+            const storedAdmin = localStorage.getItem('mechXpressAdmin');
+            return storedAdmin ? JSON.parse(storedAdmin) : defaultAdmin;
+        }
+
+        function saveAdminData(admin) {
+            localStorage.setItem('mechXpressAdmin', JSON.stringify(admin));
+        }
+
+        // --- UI POPULATION ---
+        function loadAdminData() {
+            const admin = getAdminData();
+            
+            // Populate Form
+            document.getElementById('adminName').value = admin.name;
+            document.getElementById('email').value = admin.email;
+            document.getElementById('phone').value = admin.phone;
+            document.getElementById('role').value = admin.role;
+            
+            // Populate Permissions
+            document.getElementById('manageBookings').checked = admin.permissions.manageBookings;
+            document.getElementById('manageOffers').checked = admin.permissions.manageOffers;
+            document.getElementById('viewAnalytics').checked = admin.permissions.viewAnalytics;
+            document.getElementById('manageUsers').checked = admin.permissions.manageUsers;
+            
+            // Populate Navbar
+            const nameParts = admin.name.split(' ');
+            const firstName = nameParts[0];
+            const initials = nameParts.map(n => n[0]).join('').toUpperCase();
+            
+            document.getElementById('adminName').textContent = admin.name;
+            
+            // Populate Avatars
+            const navAvatarContainer = document.getElementById('adminAvatarContainer');
+            document.getElementById('adminImagePreview').src = admin.profileImage;
+            
+            navAvatarContainer.innerHTML = ''; // Clear previous content
+            if (admin.profileImage && admin.profileImage !== 'https://via.placeholder.com/160') {
+                 navAvatarContainer.innerHTML = `<img src="${admin.profileImage}" alt="Admin Avatar" class="w-full h-full object-cover">`;
+            } else {
+                 navAvatarContainer.innerHTML = `<span class="text-white font-semibold text-sm">${initials}</span>`;
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminData();
+
+            // Form Submission
+            document.getElementById('adminForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const admin = getAdminData();
+                admin.name = document.getElementById('adminName').value;
+                admin.email = document.getElementById('email').value;
+                admin.phone = document.getElementById('phone').value;
+                admin.role = document.getElementById('role').value;
+                
+                // Update permissions
+                admin.permissions = {
+                    manageBookings: document.getElementById('manageBookings').checked,
+                    manageOffers: document.getElementById('manageOffers').checked,
+                    viewAnalytics: document.getElementById('viewAnalytics').checked,
+                    manageUsers: document.getElementById('manageUsers').checked
+                };
+                
+                saveAdminData(admin);
+                loadAdminData(); // Refresh UI
+                showToast("Admin profile updated successfully!");
+            });
+
+            // Image Upload
+            const imageUpload = document.getElementById('imageUpload');
+            const imagePreview = document.getElementById('adminImagePreview');
+            
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Simple validation
+                if (file.size > 2 * 1024 * 1024) { // 2MB
+                    alert("File is too large. Please select an image under 2MB.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imageDataUrl = event.target.result;
+                    imagePreview.src = imageDataUrl;
+
+                    // Save image data to local storage
+                    const admin = getAdminData();
+                    admin.profileImage = imageDataUrl;
+                    saveAdminData(admin);
+                    loadAdminData(); // Refresh navbar avatar
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // --- UI UTILITY FUNCTIONS ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
+        }
+
+        function logout() {
+            // Clear admin data and redirect to login
+            localStorage.removeItem('mechXpressAdmin');
+            window.location.href = 'index.html';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const button = event.target.closest('button');
+            if (!dropdown.classList.contains('hidden') && (!button || !button.onclick || button.onclick.toString().indexOf('toggleDropdown') === -1)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>
