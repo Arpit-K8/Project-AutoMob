@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History - MechXpress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'fade-in-left': 'fadeInLeft 0.8s ease-out 0.2s both',
+                        'fade-in-right': 'fadeInRight 0.8s ease-out 0.4s both',
+                        'slide-in': 'slideIn 0.8s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .booking-card {
+            transition: all 0.3s ease;
+        }
+        .booking-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .status-badge {
+            transition: all 0.3s ease;
+        }
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="flex items-center">
+                        <img src="Image/Logo.png" alt="Logo" class="h-8 w-auto object-contain">
+                        <span class="text-xl font-bold italic text-gray-900">
+                            <span class="text-xl font-bold italic text-gray-900"><span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span></span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="Home.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Home</a>
+                    <a href="Booking.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Bookings</a>
+                    <a href="#" class="text-blue-600 transition-colors duration-200 font-medium">History</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button aria-label="Toggle menu" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- User Profile & Logout -->
+                <div class="flex items-center space-x-4">
+                    <!-- User Greeting (Hidden on small screens, shown on XL) -->
+                    <div class="hidden xl:block text-gray-700">
+                        <span class="text-sm">Hi, <span id="userName" class="font-semibold text-blue-600">John Doe</span></span>
+                    </div>
+                    
+                    <!-- User Profile Dropdown -->
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all" onclick="toggleDropdown()">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm" id="userInitials">JD</span>
+                            </div>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                            <!-- <a href="Booking.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Book New Service</a> -->
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200">
+            <div class="py-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                <a href="Booking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Book Service</a>
+                <a href="#" class="block px-3 py-2 text-blue-600 font-medium">History</a>
+                <a href="adminPortal.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Admin</a>
+                <hr class="border-gray-200">
+                <button onclick="logout()" class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="mb-8 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                Booking History
+            </h1>
+            <p class="text-xl text-gray-600">View and manage all your service appointments</p>
+        </div>
+
+        <!-- Filter and Search Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-fade-in-left">
+            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-md">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search by service, booking ID, or car number..."
+                            class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <svg class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterBookings('all')" class="filter-btn active px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        All Bookings
+                    </button>
+                    <button onclick="filterBookings('confirmed')" class="filter-btn px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        Confirmed
+                    </button>
+                    <button onclick="filterBookings('completed')" class="filter-btn px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        Completed
+                    </button>
+                    <button onclick="filterBookings('cancelled')" class="filter-btn px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        Cancelled
+                    </button>
+                    <button onclick="populateDemoDataAndRefresh()" class="px-4 py-2 rounded-lg border border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors text-sm">
+                        Load Demo Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings List -->
+        <div id="bookingsContainer" class="space-y-6">
+            <!-- Bookings will be dynamically loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12">
+            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">No bookings found</h3>
+            <p class="text-gray-600 mb-6">You haven't made any service bookings yet.</p>
+            <a href="Booking.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Book Your First Service
+            </a>
+        </div>
+    </main>
+
+    <!-- Booking Details Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-gray-900">Booking Details</h3>
+                    <button onclick="closeBookingModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="modalContent" class="p-6">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 italic">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed">Your trusted automotive service partner providing excellence in car care and maintenance with professional expertise.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Preventive Maintenance</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Body Repair</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Car Care</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Emergency Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="Booking.html" class="hover:text-white transition-colors">Book Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">History</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            support@mechxpress.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.69l1.2 3.6a1 1 0 01-.52 1.22l-2.02 1.01a10.5 10.5 0 006.54 6.54l1.01-2.02a1 1 0 011.22-.52l3.6 1.2a1 1 0 01.69.95V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            +91 89456 12378
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            123 Auto Lane, Tech City, India
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+                &copy; 2025 MechXpress. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Data Script -->
+    <script src="demoData.js"></script>
+    
+    <script>
+        // --- DATA MANAGEMENT ---
+        function getUserData() {
+            const defaultUser = {
+                name: "John Doe",
+                profileImage: null // No default image initially
+            };
+            const storedUser = localStorage.getItem('mechXpressUser');
+            // If user data exists in storage, use it, otherwise use the default
+            return storedUser ? JSON.parse(storedUser) : defaultUser;
+        }
+
+        // --- UI INITIALIZATION ---
+        function initializeUser() {
+            const user = getUserData();
+            
+            // Get name parts
+            const nameParts = user.name.split(' ');
+            const firstName = nameParts[0];
+            const initials = nameParts.map(n => n[0]).join('').toUpperCase();
+
+            // Populate text elements
+            document.getElementById('userName').textContent = user.name;
+            
+            // Populate the user avatar in the navbar
+            const navAvatarContainer = document.querySelector('.flex.items-center.space-x-4 .w-8.h-8');
+            
+            if (user.profileImage && user.profileImage.startsWith('data:image')) {
+                // If a custom profile image is saved, display it
+                navAvatarContainer.innerHTML = `<img src="${user.profileImage}" alt="User Avatar" class="w-full h-full object-cover rounded-full">`;
+            } else {
+                // Otherwise, display the initials
+                navAvatarContainer.innerHTML = `<span class="text-white font-semibold text-sm">${initials}</span>`;
+            }
+        }
+
+        // Global variables
+        let allBookings = [];
+        let filteredBookings = [];
+        let currentFilter = 'all';
+
+        // Initialize page
+        function initializePage() {
+            // Initialize user data
+            initializeUser();
+            
+            loadBookings();
+            setupEventListeners();
+            displayBookings();
+        }
+
+        // Load bookings from localStorage
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookingHistory') || '[]');
+            allBookings = bookings;
+            filteredBookings = [...bookings];
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                filterBookings(currentFilter, searchTerm);
+            });
+        }
+
+        // Display bookings
+        function displayBookings() {
+            const container = document.getElementById('bookingsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (filteredBookings.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.innerHTML = '';
+
+            filteredBookings.forEach((booking, index) => {
+                const bookingCard = createBookingCard(booking, index);
+                container.appendChild(bookingCard);
+            });
+        }
+
+        // Create booking card
+        function createBookingCard(booking, index) {
+            const card = document.createElement('div');
+            card.className = 'booking-card bg-white rounded-2xl shadow-lg p-6 animate-fade-in-up';
+            card.style.animationDelay = `${index * 0.1}s`;
+
+            const statusClass = getStatusClass(booking.status);
+            const statusText = getStatusText(booking.status);
+
+            card.innerHTML = `
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">${formatServiceName(booking.service)}</h3>
+                            <p class="text-sm text-gray-600">Booking ID: ${booking.bookingId}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-4 lg:mt-0">
+                        <span class="status-badge px-3 py-1 rounded-full text-sm font-medium ${statusClass}">
+                            ${statusText}
+                        </span>
+                        <button onclick="viewBookingDetails(${index})" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                        <span class="text-gray-600">Vehicle:</span>
+                        <span class="font-medium ml-2">${formatCarCompany(booking.carCompany)} ${booking.carModel}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Car Number:</span>
+                        <span class="font-medium ml-2">${booking.carNumber}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Date:</span>
+                        <span class="font-medium ml-2">${formatDate(booking.appointmentDate)}</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
+                    <div class="text-sm text-gray-600">
+                        <span>Estimated Time: </span>
+                        <span class="font-medium text-blue-600">${booking.estimatedTime}</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        ${booking.status === 'confirmed' ? `
+                            <button onclick="cancelBooking(${index})" class="px-3 py-1 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors text-sm">
+                                Cancel
+                            </button>
+                        ` : ''}
+                        ${booking.status === 'completed' ? `
+                            <button onclick="rateBooking(${index})" class="px-3 py-1 text-yellow-600 border border-yellow-300 rounded-lg hover:bg-yellow-50 transition-colors text-sm">
+                                Rate Service
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Filter bookings
+        function filterBookings(filter, searchTerm = '') {
+            currentFilter = filter;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter by status
+            let filtered = allBookings;
+            if (filter !== 'all') {
+                filtered = allBookings.filter(booking => booking.status === filter);
+            }
+
+            // Filter by search term
+            if (searchTerm) {
+                filtered = filtered.filter(booking => 
+                    booking.service.toLowerCase().includes(searchTerm) ||
+                    booking.bookingId.toLowerCase().includes(searchTerm) ||
+                    booking.carNumber.toLowerCase().includes(searchTerm) ||
+                    booking.carModel.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            filteredBookings = filtered;
+            displayBookings();
+        }
+
+        // View booking details
+        function viewBookingDetails(index) {
+            const booking = filteredBookings[index];
+            const modal = document.getElementById('bookingModal');
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Booking Header -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-900">${formatServiceName(booking.service)}</h4>
+                            <p class="text-gray-600">Booking ID: ${booking.bookingId}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(booking.status)}">
+                            ${getStatusText(booking.status)}
+                        </span>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-900 mb-3">Customer Information</h5>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Name:</span>
+                                <span class="font-medium ml-2">${booking.fullName}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Email:</span>
+                                <span class="font-medium ml-2">${booking.email}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Phone:</span>
+                                <span class="font-medium ml-2">${booking.phone}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Address:</span>
+                                <span class="font-medium ml-2">${booking.address}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Information -->
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-900 mb-3">Vehicle Information</h5>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Company:</span>
+                                <span class="font-medium ml-2">${formatCarCompany(booking.carCompany)}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Model:</span>
+                                <span class="font-medium ml-2">${booking.carModel}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Number:</span>
+                                <span class="font-medium ml-2">${booking.carNumber}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Fuel Type:</span>
+                                <span class="font-medium ml-2">${formatFuelType(booking.fuelType)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Information -->
+                    <div>
+                        <h5 class="text-lg font-semibold text-gray-900 mb-3">Service Information</h5>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Service Type:</span>
+                                <span class="font-medium ml-2">${formatServiceName(booking.service)}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Appointment Date:</span>
+                                <span class="font-medium ml-2">${formatDate(booking.appointmentDate)}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Estimated Time:</span>
+                                <span class="font-medium ml-2 text-blue-600">${booking.estimatedTime}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Booking Date:</span>
+                                <span class="font-medium ml-2">${formatDate(booking.bookingDate || booking.timestamp)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                        <button onclick="closeBookingModal()" class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                            Close
+                        </button>
+                        ${booking.status === 'confirmed' ? `
+                            <button onclick="cancelBooking(${index})" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                Cancel Booking
+                            </button>
+                        ` : ''}
+                        ${booking.status === 'completed' ? `
+                            <button onclick="rateBooking(${index})" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                                Rate Service
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close booking modal
+        function closeBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Cancel booking
+        function cancelBooking(index) {
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                const booking = filteredBookings[index];
+                booking.status = 'cancelled';
+                
+                // Update in allBookings array
+                const allIndex = allBookings.findIndex(b => b.bookingId === booking.bookingId);
+                if (allIndex !== -1) {
+                    allBookings[allIndex].status = 'cancelled';
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('bookingHistory', JSON.stringify(allBookings));
+                
+                // Refresh display
+                loadBookings();
+                filterBookings(currentFilter);
+                
+                alert('Booking cancelled successfully!');
+            }
+        }
+
+        // Rate booking
+        function rateBooking(index) {
+            const rating = prompt('Please rate this service (1-5 stars):');
+            if (rating && rating >= 1 && rating <= 5) {
+                const booking = filteredBookings[index];
+                booking.rating = parseInt(rating);
+                booking.rated = true;
+                
+                // Update in allBookings array
+                const allIndex = allBookings.findIndex(b => b.bookingId === booking.bookingId);
+                if (allIndex !== -1) {
+                    allBookings[allIndex].rating = parseInt(rating);
+                    allBookings[allIndex].rated = true;
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('bookingHistory', JSON.stringify(allBookings));
+                
+                // Refresh display
+                loadBookings();
+                filterBookings(currentFilter);
+                
+                alert('Thank you for your rating!');
+            }
+        }
+
+        // Utility functions
+        function getStatusClass(status) {
+            const statusClasses = {
+                'confirmed': 'bg-blue-100 text-blue-800',
+                'completed': 'bg-green-100 text-green-800',
+                'cancelled': 'bg-red-100 text-red-800',
+                'in-progress': 'bg-yellow-100 text-yellow-800'
+            };
+            return statusClasses[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getStatusText(status) {
+            const statusTexts = {
+                'confirmed': 'Confirmed',
+                'completed': 'Completed',
+                'cancelled': 'Cancelled',
+                'in-progress': 'In Progress'
+            };
+            return statusTexts[status] || 'Unknown';
+        }
+
+        function formatServiceName(service) {
+            const serviceMap = {
+                'preventive-maintenance': 'Preventive Maintenance',
+                'body-repair': 'Body Repair',
+                'car-care': 'Car Care Service',
+                'engine-service': 'Engine Service',
+                'interior-service': 'Interior Service',
+                'tire-service': 'Tire Service',
+                'diagnostic': 'Diagnostic Services',
+                'brake-service': 'Brake System Service',
+                'hybrid-electric': 'Hybrid/Electric Vehicle Services',
+                'emergency': 'Emergency Roadside Assistance'
+            };
+            return serviceMap[service] || service;
+        }
+
+        function formatCarCompany(company) {
+            const companyMap = {
+                'maruti-suzuki': 'Maruti Suzuki',
+                'hyundai': 'Hyundai',
+                'tata': 'Tata',
+                'mahindra': 'Mahindra',
+                'honda': 'Honda',
+                'toyota': 'Toyota',
+                'kia': 'Kia',
+                'mg': 'MG Motors',
+                'volkswagen': 'Volkswagen',
+                'skoda': 'Skoda',
+                'ford': 'Ford',
+                'nissan': 'Nissan',
+                'renault': 'Renault',
+                'bmw': 'BMW',
+                'mercedes': 'Mercedes-Benz',
+                'audi': 'Audi',
+                'other': 'Other'
+            };
+            return companyMap[company] || company;
+        }
+
+        function formatFuelType(fuel) {
+            const fuelMap = {
+                'petrol': 'Petrol',
+                'diesel': 'Diesel',
+                'cng': 'CNG',
+                'electric': 'Electric',
+                'hybrid': 'Hybrid'
+            };
+            return fuelMap[fuel] || fuel;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Navigation functions
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
+        }
+
+        function logout() {
+            // Clear user data and redirect to login
+            localStorage.removeItem('mechXpressUser');
+            window.location.href = 'index.html';
+        }
+
+        // Override the demo data function to refresh display
+        function populateDemoDataAndRefresh() {
+            const success = populateDemoData();
+            if (success) {
+                loadBookings();
+                displayBookings();
+                alert('Demo data loaded successfully!');
+            } else {
+                alert('Demo data already exists. Clear existing data first if needed.');
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

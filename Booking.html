@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service - MechXpress Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'fade-in-left': 'fadeInLeft 0.8s ease-out 0.2s both',
+                        'fade-in-right': 'fadeInRight 0.8s ease-out 0.4s both',
+                        'slide-in': 'slideIn 0.8s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .form-field {
+            transition: all 0.3s ease;
+        }
+        .form-field:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="flex items-center">
+                        <img src="Image/Logo.png" alt="Logo" class="h-8 w-auto object-contain">
+                        <span class="text-xl font-bold italic text-gray-900">
+                            <span class="text-xl font-bold italic text-gray-900"><span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span></span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="Home.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Home</a>
+                    <a href="#" class="text-blue-600 transition-colors duration-200 font-medium">Bookings</a>
+                    <a href="bookingHistory.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">History</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button aria-label="Toggle menu" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- User Profile & Logout -->
+                <div class="flex items-center space-x-4">
+                    <!-- User Greeting (Hidden on small screens, shown on XL) -->
+                    <div class="hidden xl:block text-gray-700">
+                        <span class="text-sm">Hi, <span id="userName" class="font-semibold text-blue-600">John Doe</span></span>
+                    </div>
+                    
+                    <!-- User Profile Dropdown -->
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all" onclick="toggleDropdown()">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm" id="userInitials">JD</span>
+                            </div>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                            <!-- <a href="bookingHistory.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">My Bookings</a> -->
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200">
+            <div class="py-3 space-y-1">
+                <a href="dashboard.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                <a href="#services" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Services</a>
+                <a href="#" class="block px-3 py-2 text-blue-600 font-medium">Bookings</a>
+                <a href="bookingHistory.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">History</a>
+                <hr class="border-gray-200">
+                <button onclick="logout()" class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="mb-12 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                Book Your Service
+            </h1>
+            <p class="text-xl text-gray-600">Schedule your car maintenance with MechXpress professional experts</p>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Form Section -->
+            <div class="lg:col-span-2">
+                <form id="bookingForm" method="POST" action="booked.html" class="bg-white rounded-2xl shadow-xl p-8 animate-fade-in-left">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                        <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Service Details
+                    </h2>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Personal Information -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">Personal Information</h3>
+                            
+                            <!-- Full Name -->
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <div id="nameError" class="text-red-500 text-sm mt-1 hidden">Please enter your full name</div>
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <div id="emailError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address</div>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}"
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="1234567890">
+                                <div id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid 10-digit phone number</div>
+                            </div>
+
+                            <!-- Address -->
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Service Address *</label>
+                                <textarea id="address" name="address" rows="3" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter your complete address where service is needed"></textarea>
+                                <div id="addressError" class="text-red-500 text-sm mt-1 hidden">Please enter your service address</div>
+                            </div>
+                        </div>
+
+                        <!-- Service & Vehicle Information -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">Service & Vehicle Details</h3>
+                            
+                            <!-- Select Service -->
+                            <div>
+                                <label for="service" class="block text-sm font-medium text-gray-700 mb-2">Select Service *</label>
+                                <select id="service" name="service" required onchange="updateEstimatedTime()"
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Choose a service...</option>
+                                    <option value="preventive-maintenance" data-time="2-3">Preventive Maintenance</option>
+                                    <option value="body-repair" data-time="4-6">Body Repair</option>
+                                    <option value="car-care" data-time="1-2">Car Care Service</option>
+                                    <option value="engine-service" data-time="3-4">Engine Service</option>
+                                    <option value="interior-service" data-time="2-3">Interior Service</option>
+                                    <option value="tire-service" data-time="1-2">Tire Service</option>
+                                    <option value="diagnostic" data-time="1-2">Diagnostic Services</option>
+                                    <option value="brake-service" data-time="2-3">Brake System Service</option>
+                                    <option value="hybrid-electric" data-time="3-5">Hybrid/Electric Vehicle Services</option>
+                                    <option value="emergency" data-time="0.5-1">Emergency Roadside Assistance</option>
+                                </select>
+                                <div id="serviceError" class="text-red-500 text-sm mt-1 hidden">Please select a service</div>
+                            </div>
+
+                            <!-- Car Number -->
+                            <div>
+                                <label for="carNumber" class="block text-sm font-medium text-gray-700 mb-2">Car Number *</label>
+                                <input type="text" id="carNumber" name="carNumber" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+                                    placeholder="BR01AB1234">
+                                <div id="carNumberError" class="text-red-500 text-sm mt-1 hidden">Please enter your car number</div>
+                            </div>
+
+                            <!-- Car Company -->
+                            <div>
+                                <label for="carCompany" class="block text-sm font-medium text-gray-700 mb-2">Car Company *</label>
+                                <select id="carCompany" name="carCompany" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select Car Brand...</option>
+                                    <option value="maruti-suzuki">Maruti Suzuki</option>
+                                    <option value="hyundai">Hyundai</option>
+                                    <option value="tata">Tata</option>
+                                    <option value="mahindra">Mahindra</option>
+                                    <option value="honda">Honda</option>
+                                    <option value="toyota">Toyota</option>
+                                    <option value="kia">Kia</option>
+                                    <option value="mg">MG Motors</option>
+                                    <option value="volkswagen">Volkswagen</option>
+                                    <option value="skoda">Skoda</option>
+                                    <option value="ford">Ford</option>
+                                    <option value="nissan">Nissan</option>
+                                    <option value="renault">Renault</option>
+                                    <option value="bmw">BMW</option>
+                                    <option value="mercedes">Mercedes-Benz</option>
+                                    <option value="audi">Audi</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div id="carCompanyError" class="text-red-500 text-sm mt-1 hidden">Please select car company</div>
+                            </div>
+
+                            <!-- Car Model -->
+                            <div>
+                                <label for="carModel" class="block text-sm font-medium text-gray-700 mb-2">Car Model *</label>
+                                <input type="text" id="carModel" name="carModel" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="e.g., Swift, i20, Nexon">
+                                <div id="carModelError" class="text-red-500 text-sm mt-1 hidden">Please enter car model</div>
+                            </div>
+
+                            <!-- Fuel Type -->
+                            <div>
+                                <label for="fuelType" class="block text-sm font-medium text-gray-700 mb-2">Fuel Type *</label>
+                                <select id="fuelType" name="fuelType" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select Fuel Type...</option>
+                                    <option value="petrol">Petrol</option>
+                                    <option value="diesel">Diesel</option>
+                                    <option value="cng">CNG</option>
+                                    <option value="electric">Electric</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                                <div id="fuelTypeError" class="text-red-500 text-sm mt-1 hidden">Please select fuel type</div>
+                            </div>
+
+                            <!-- Appointment Date -->
+                            <div>
+                                <label for="appointmentDate" class="block text-sm font-medium text-gray-700 mb-2">Preferred Appointment Date *</label>
+                                <input type="date" id="appointmentDate" name="appointmentDate" required
+                                    class="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <div id="dateError" class="text-red-500 text-sm mt-1 hidden">Please select a future date</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estimated Time Display -->
+                    <div id="estimatedTimeSection" class="mt-8 p-4 bg-blue-50 rounded-lg hidden">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-2">Estimated Service Time</h3>
+                        <p id="estimatedTime" class="text-blue-700"></p>
+                        <p class="text-sm text-blue-600 mt-1">*Time may vary based on vehicle condition and specific requirements</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="mt-8">
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Book Service Now</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Service Information Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-xl p-6 animate-fade-in-right sticky top-24">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Why Choose MechXpress?</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Expert Technicians</h4>
+                                <p class="text-sm text-gray-600">Certified professionals with years of experience</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Quick Turnaround</h4>
+                                <p class="text-sm text-gray-600">Fast and efficient service delivery</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Quality Guarantee</h4>
+                                <p class="text-sm text-gray-600">100% satisfaction guaranteed with warranty</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Transparent Pricing</h4>
+                                <p class="text-sm text-gray-600">No hidden charges, upfront pricing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="mt-8 p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-semibold text-red-800 mb-2">Emergency Service?</h4>
+                        <p class="text-sm text-red-700 mb-3">Need immediate assistance? Call our 24/7 helpline</p>
+                        <a href="tel:8945612378" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.69l1.2 3.6a1 1 0 01-.52 1.22l-2.02 1.01a10.5 10.5 0 006.54 6.54l1.01-2.02a1 1 0 011.22-.52l3.6 1.2a1 1 0 01.69.95V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <span>89456 12378</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 italic">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed">Your trusted automotive service partner providing excellence in car care and maintenance with professional expertise.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Preventive Maintenance</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Body Repair</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Car Care</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Emergency Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Book Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Reports</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            support@mechxpress.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.69l1.2 3.6a1 1 0 01-.52 1.22l-2.02 1.01a10.5 10.5 0 006.54 6.54l1.01-2.02a1 1 0 011.22-.52l3.6 1.2a1 1 0 01.69.95V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            +91 89456 12378
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            123 Auto Lane, Tech City, India
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+                &copy; 2025 MechXpress. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA MANAGEMENT ---
+        function getUserData() {
+            const defaultUser = {
+                name: "John Doe",
+                profileImage: null // No default image initially
+            };
+            const storedUser = localStorage.getItem('mechXpressUser');
+            // If user data exists in storage, use it, otherwise use the default
+            return storedUser ? JSON.parse(storedUser) : defaultUser;
+        }
+
+        // --- UI INITIALIZATION ---
+        function initializeUser() {
+            const user = getUserData();
+            
+            // Get name parts
+            const nameParts = user.name.split(' ');
+            const firstName = nameParts[0];
+            const initials = nameParts.map(n => n[0]).join('').toUpperCase();
+
+            // Populate text elements
+            document.getElementById('userName').textContent = user.name;
+            
+            // Populate the user avatar in the navbar
+            const navAvatarContainer = document.querySelector('.flex.items-center.space-x-4 .w-8.h-8');
+            
+            if (user.profileImage && user.profileImage.startsWith('data:image')) {
+                // If a custom profile image is saved, display it
+                navAvatarContainer.innerHTML = `<img src="${user.profileImage}" alt="User Avatar" class="w-full h-full object-cover rounded-full">`;
+            } else {
+                // Otherwise, display the initials
+                navAvatarContainer.innerHTML = `<span class="text-white font-semibold text-sm">${initials}</span>`;
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
+        }
+
+        function logout() {
+            // Clear user data and redirect to login
+            localStorage.removeItem('mechXpressUser');
+            window.location.href = 'index.html';
+        }
+
+        function updateEstimatedTime() {
+            const select = document.getElementById('service');
+            const time = select.options[select.selectedIndex].getAttribute('data-time');
+            if (time) {
+                document.getElementById('estimatedTime').textContent = `${time} hours`;
+                document.getElementById('estimatedTimeSection').classList.remove('hidden');
+            } else {
+                document.getElementById('estimatedTimeSection').classList.add('hidden');
+            }
+        }
+
+        // Form validation on submit
+        const form = document.getElementById('bookingForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            let valid = true;
+            // Hide all errors first
+            document.querySelectorAll('.text-red-500').forEach(el => el.classList.add('hidden'));
+
+            // Full Name
+            if (!document.getElementById('fullName').value.trim()) {
+                document.getElementById('nameError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Email
+            const email = document.getElementById('email');
+            if (!email.value.trim() || !email.checkValidity()) {
+                document.getElementById('emailError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Phone
+            const phone = document.getElementById('phone');
+            if (!phone.value.trim() || !phone.checkValidity()) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Address
+            if (!document.getElementById('address').value.trim()) {
+                document.getElementById('addressError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Service
+            if (!document.getElementById('service').value) {
+                document.getElementById('serviceError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Car Number
+            if (!document.getElementById('carNumber').value.trim()) {
+                document.getElementById('carNumberError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Car Company
+            if (!document.getElementById('carCompany').value) {
+                document.getElementById('carCompanyError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Car Model
+            if (!document.getElementById('carModel').value.trim()) {
+                document.getElementById('carModelError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Fuel Type
+            if (!document.getElementById('fuelType').value) {
+                document.getElementById('fuelTypeError').classList.remove('hidden');
+                valid = false;
+            }
+
+            // Appointment Date (validate future date)
+            const dateInput = document.getElementById('appointmentDate');
+            if (dateInput.value) {
+                const selectedDate = new Date(dateInput.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (selectedDate < today) {
+                    document.getElementById('dateError').textContent = 'Please select a future date';
+                    document.getElementById('dateError').classList.remove('hidden');
+                    valid = false;
+                }
+            } else {
+                document.getElementById('dateError').textContent = 'Please select a date';
+                document.getElementById('dateError').classList.remove('hidden');
+                valid = false;
+            }
+
+            if (valid) {
+                // Collect form data
+                const formData = {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    service: document.getElementById('service').value,
+                    carNumber: document.getElementById('carNumber').value.trim().toUpperCase(),
+                    carCompany: document.getElementById('carCompany').value,
+                    carModel: document.getElementById('carModel').value.trim(),
+                    fuelType: document.getElementById('fuelType').value,
+                    appointmentDate: document.getElementById('appointmentDate').value,
+                    estimatedTime: document.getElementById('estimatedTime').textContent || '2-3 hours'
+                };
+
+                // Store data in sessionStorage for immediate use
+                sessionStorage.setItem('bookingData', JSON.stringify(formData));
+
+                // Generate booking ID
+                const timestamp = Date.now().toString().slice(-6);
+                const bookingId = `MX-2025-${timestamp}`;
+                
+                // Create booking history entry
+                const bookingHistoryEntry = {
+                    ...formData,
+                    bookingId: bookingId,
+                    bookingDate: new Date().toISOString(),
+                    status: 'confirmed',
+                    timestamp: new Date().toISOString()
+                };
+
+                // Save to localStorage for history
+                const existingHistory = JSON.parse(localStorage.getItem('bookingHistory') || '[]');
+                existingHistory.unshift(bookingHistoryEntry); // Add to beginning of array
+                localStorage.setItem('bookingHistory', JSON.stringify(existingHistory));
+
+                // Redirect to booked.html
+                window.location.href = 'booked.html';
+            }
+        });
+
+        // On page load, check for pre-selected service from URL (e.g., ?service=preventive-maintenance)
+        window.addEventListener('load', function() {
+            // Initialize user data
+            initializeUser();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+            if (service) {
+                const select = document.getElementById('service');
+                select.value = service;
+                updateEstimatedTime();
+            }
+        });
+    </script>
+</body>
+</html>
