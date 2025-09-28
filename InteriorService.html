@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interior Service - MechXpress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'fade-in-left': 'fadeInLeft 0.8s ease-out 0.2s both',
+                        'fade-in-right': 'fadeInRight 0.8s ease-out 0.4s both',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'slide-in': 'slideIn 0.8s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .hero-bg {
+            background: linear-gradient(to right, #2563eb, #1e40af);
+        }
+        .IMG1 {
+            max-height: 400px;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .comfort-card {
+            background: linear-gradient(135deg, #e0f2fe 0%, #81d4fa 100%);
+        }
+        .cleanliness-card {
+            background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <img src="Image/Logo.png" alt="Logo" class="h-8 w-auto object-contain">
+                    <span class="text-xl font-bold italic text-gray-900">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="Home.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Home</a>
+                    <a href="Home.html#services" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Services</a>
+                    <a href="Booking.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Bookings</a>
+                    <a href="bookingHistory.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">History</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button aria-label="Toggle menu" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- User Profile & Logout -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden xl:block text-gray-700">
+                        <span class="text-sm">Hi, <span id="userName" class="font-semibold text-blue-600">John Doe</span></span>
+                    </div>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all" onclick="toggleDropdown()">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm" id="userInitials">JD</span>
+                            </div>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200">
+                <div class="py-3 space-y-1">
+                    <a href="Home.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="Home.html#services" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Services</a>
+                    <a href="Booking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Bookings</a>
+                    <a href="bookingHistory.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">History</a>
+                    <hr class="border-gray-200">
+                    <button onclick="logout()" class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="hero-bg rounded-2xl p-8 md:p-12 mb-12 text-white animate-fade-in-up">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="lg:w-1/2 mb-8 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        Premium Interior Services
+                    </h1>
+                    <p class="text-xl opacity-90 mb-8 leading-relaxed">
+                        Complete interior care including AC system service, cabin air filter replacement, dashboard cleaning, upholstery care, and interior detailing to ensure a comfortable and clean driving environment.
+                    </p>
+                    <div class="flex items-center space-x-4 text-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Climate Comfort
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Deep Sanitization
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 flex justify-center">
+                    <dotlottie-wc
+                    src="https://lottie.host/054232eb-67f3-4d39-9c20-0a7f923b4a52/3wempCPwyp.lottie"
+                    style="width: 500px;height: 400px"
+                    autoplay
+                    loop
+                    ></dotlottie-wc>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Overview -->
+        <div class="mb-16 animate-fade-in-left">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-1/2 mb-8 lg:mb-0 lg:pr-8">
+                        <img src="Image/InteriorCare.png" alt="Interior Care" class="IMG1 w-full object-cover rounded-lg shadow-md">
+                    </div>
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Complete Interior Care & Comfort</h2>
+                        <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+                            Your vehicle's interior is where you spend your driving time, and it deserves expert care. Our comprehensive interior services ensure optimal air quality, comfort, and cleanliness for a premium driving experience every time you get behind the wheel.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>AC System Excellence:</strong> Professional climate control service and optimization</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>Deep Cleaning:</strong> Thorough sanitization and detailing of all surfaces</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>Material Protection:</strong> Leather and fabric conditioning for longevity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interior Comfort Zones -->
+        <div class="mb-16 animate-fade-in-right">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Interior Comfort & Health Zones</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Climate Control -->
+                <div class="rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);">
+                    <div class="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Climate Control</h3>
+                    <p class="text-gray-700 text-sm">AC system service, refrigerant recharge, and optimal temperature control</p>
+                </div>
+
+                <!-- Air Quality -->
+                <div class="rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 100%);">
+                    <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Air Quality</h3>
+                    <p class="text-gray-700 text-sm">Cabin air filter replacement and ventilation system cleaning</p>
+                </div>
+
+                <!-- Seating Comfort -->
+                <div class="rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);">
+                    <div class="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Seating Comfort</h3>
+                    <p class="text-gray-700 text-sm">Upholstery cleaning, leather conditioning, and fabric protection</p>
+                </div>
+
+                <!-- Dashboard Care -->
+                <div class="rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #fff3e0 0%, #ffb74d 100%);">
+                    <div class="w-16 h-16 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Dashboard Care</h3>
+                    <p class="text-gray-700 text-sm">Dashboard cleaning, UV protection, and trim restoration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Interior Services -->
+        <div class="mb-16 animate-fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Comprehensive Interior Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- AC System Service -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 5 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">AC System Service</h3>
+                    <p class="text-base text-gray-600 mb-4">Complete air conditioning service including refrigerant recharge, leak detection, and performance optimization.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Refrigerant level check & recharge</li>
+                        <li>• AC compressor diagnosis</li>
+                        <li>• System leak detection</li>
+                        <li>• Performance optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Cabin Air Filter -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Cabin Air Filter Service</h3>
+                    <p class="text-base text-gray-600 mb-4">High-quality cabin air filter replacement to ensure clean, fresh air circulation and optimal HVAC performance.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Premium filter replacement</li>
+                        <li>• HEPA filtration options</li>
+                        <li>• Ventilation system cleaning</li>
+                        <li>• Airflow optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Dashboard Cleaning -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Dashboard & Trim Care</h3>
+                    <p class="text-base text-gray-600 mb-4">Professional dashboard cleaning, conditioning, and UV protection to maintain appearance and prevent cracking.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Deep cleaning & sanitization</li>
+                        <li>• UV protection treatment</li>
+                        <li>• Trim restoration</li>
+                        <li>• Anti-static application</li>
+                    </ul>
+                </div>
+
+                <!-- Upholstery Care -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Upholstery Cleaning</h3>
+                    <p class="text-base text-gray-600 mb-4">Deep cleaning and conditioning of leather and fabric seats to restore comfort and appearance.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Leather cleaning & conditioning</li>
+                        <li>• Fabric deep cleaning</li>
+                        <li>• Stain removal treatment</li>
+                        <li>• Protective coating application</li>
+                    </ul>
+                </div>
+
+                <!-- Carpet & Floor Care -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Carpet & Floor Mats</h3>
+                    <p class="text-base text-gray-600 mb-4">Thorough carpet shampooing, floor mat cleaning, and protective treatment for lasting cleanliness.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Steam cleaning & extraction</li>
+                        <li>• Odor elimination treatment</li>
+                        <li>• Floor mat restoration</li>
+                        <li>• Scotchgard protection</li>
+                    </ul>
+                </div>
+
+                <!-- Interior Sanitization -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-cyan-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.602-4.777a4.5 4.5 0 01-5.953 2.427l-.61-.09A23.502 23.502 0 0112 5.5c-1.686 0-3.307.17-4.842.477l-.614.09a4.5 4.5 0 01-5.949-2.427 4.5 4.5 0 011.918-5.816l.642-.283a24.601 24.601 0 0117.69 0l.642.283a4.5 4.5 0 011.918 5.816z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Interior Sanitization</h3>
+                    <p class="text-base text-gray-600 mb-4">Complete sanitization service using professional-grade products to eliminate bacteria, viruses, and odors.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• EPA-approved disinfectants</li>
+                        <li>• Ozone odor elimination</li>
+                        <li>• Touch-point sanitization</li>
+                        <li>• Air purification treatment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interior Service Process -->
+        <div class="mb-16 animate-fade-in-left">
+            <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Our Interior Service Process</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Interior Assessment</h3>
+                    <p class="text-gray-600">Comprehensive evaluation of interior condition, AC system, and specific cleaning requirements.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Deep Cleaning</h3>
+                    <p class="text-gray-600">Thorough cleaning of all surfaces, upholstery, and ventilation systems using professional equipment.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">AC System Service</h3>
+                    <p class="text-gray-600">Professional AC maintenance, filter replacement, and climate control optimization.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">4</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Protection & Finishing</h3>
+                    <p class="text-gray-600">Application of protective coatings and final detailing for lasting comfort and cleanliness.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health & Comfort Benefits -->
+        <div class="mb-16 animate-fade-in-right">
+            <div class="bg-gray-100 rounded-2xl p-8 md:p-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Interior Service Health Benefits</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Improved Air Quality</h3>
+                        <p class="text-gray-600">Clean cabin air filters and sanitized ventilation systems provide healthier breathing environment.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Allergen Reduction</h3>
+                        <p class="text-gray-600">Deep cleaning and HEPA filtration significantly reduce allergens, dust, and pollutants.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.602-4.777a4.5 4.5 0 01-5.953 2.427l-.61-.09A23.502 23.502 0 0112 5.5c-1.686 0-3.307.17-4.842.477l-.614.09a4.5 4.5 0 01-5.949-2.427 4.5 4.5 0 011.918-5.816l.642-.283a24.601 24.601 0 0117.69 0l.642.283a4.5 4.5 0 011.918 5.816z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Bacteria & Virus Protection</h3>
+                        <p class="text-gray-600">Professional sanitization eliminates harmful microorganisms for a safer driving environment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AC System Maintenance Tips -->
+        <div class="mb-16 animate-fade-in-up">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-cyan-50 to-blue-50 p-8 md:p-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">AC System Maintenance Guide</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 ml-6">Signs Your AC Needs Service</h3>
+                            <ul class="space-y-3 text-gray-700 text-base font-normal ml-6">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Weak or warm air flow</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Unusual odors from vents</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Strange noises when AC runs</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Excessive moisture or fogging</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Water leaking inside the cabin</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>AC takes too long to cool</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-6 h-6 text-red-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Frequent cycling of the AC compressor</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Maintenance Schedule</h3>
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-lg p-4 shadow-sm">
+                                    <h4 class="font-bold text-gray-900 mb-2">Every 12,000 Miles</h4>
+                                    <p class="text-gray-600 text-sm">Cabin air filter replacement</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-4 shadow-sm">
+                                    <h4 class="font-bold text-gray-900 mb-2">Every 2 Years</h4>
+                                    <p class="text-gray-600 text-sm">AC system inspection & recharge</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-4 shadow-sm">
+                                    <h4 class="font-bold text-gray-900 mb-2">Seasonally</h4>
+                                    <p class="text-gray-600 text-sm">Professional sanitization service</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interior Care Packages -->
+        <div class="mb-16 animate-fade-in-left">
+            <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Interior Care Service Packages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Essential Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Essential Clean</h3>
+                    <p class="text-3xl font-bold text-blue-600 mb-6">₹599</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Basic interior vacuuming</li>
+                        <li>• Dashboard & console cleaning</li>
+                        <li>• Window cleaning (interior)</li>
+                        <li>• Air freshener application</li>
+                        <li>• Door panel wiping</li>
+                    </ul>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+
+                <!-- Complete Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center border-2 border-orange-200 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold">RECOMMENDED</span>
+                    </div>
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Complete Interior</h3>
+                    <p class="text-3xl font-bold text-orange-600 mb-6">₹1,199</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Everything in Essential Clean</li>
+                        <li>• AC system service & recharge</li>
+                        <li>• Cabin air filter replacement</li>
+                        <li>• Upholstery deep cleaning</li>
+                        <li>• Carpet shampooing</li>
+                        <li>• Interior sanitization</li>
+                    </ul>
+                    <button class="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Premium Luxury</h3>
+                    <p class="text-3xl font-bold text-purple-600 mb-6">₹1,899</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Everything in Complete Interior</li>
+                        <li>• Leather conditioning treatment</li>
+                        <li>• Odor elimination service</li>
+                        <li>• UV protection for all surfaces</li>
+                        <li>• Premium Scotchgard application</li>
+                        <li>• 6-month freshness guarantee</li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Service Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 md:p-12 text-white text-center animate-fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Transform Your Driving Experience</h2>
+            <p class="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+                Experience the comfort and freshness of a professionally serviced interior. Our expert technicians will ensure your vehicle's interior is clean, healthy, and comfortable for every journey.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="Booking.html" class="bg-white text-blue-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Book Interior Service
+                </a>
+                <a href="tel:8945612378" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                    Call: 89456 12378
+                </a>
+            </div>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Fresh Air Guarantee</h4>
+                    <p class="text-sm opacity-90">Clean, healthy cabin environment</p>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Professional Sanitization</h4>
+                    <p class="text-sm opacity-90">EPA-approved cleaning products</p>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Comfort Optimization</h4>
+                    <p class="text-sm opacity-90">Premium AC system service</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 italic">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed">Your trusted automotive service partner providing excellence in car care and maintenance with professional expertise.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Preventive Maintenance</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Body Repair</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Car Care</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Emergency Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="Booking.html" class="hover:text-white transition-colors">Book Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Reports</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            info@mechxpress.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            +1 (555) 123-4567
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            123 Auto Street, Service City
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 MechXpress. All rights reserved. | Your trusted automotive service partner</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logout Overlay -->
+    <div id="logoutOverlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm hidden items-center justify-center z-[9999]">
+        <div class="flex flex-col items-center">
+            <div class="h-14 w-14 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
+            <p class="text-lg font-semibold text-blue-700">Signing you out...</p>
+        </div>
+    </div>
+
+    <script>
+        // Get user data from localStorage or use defaults
+        function getUserData() {
+            const defaultUser = {
+                name: "John Doe",
+                profileImage: null
+            };
+            const storedUser = localStorage.getItem('mechXpressUser');
+            return storedUser ? JSON.parse(storedUser) : defaultUser;
+        }
+
+        // Initialize user data in the interface
+        function initializeUser() {
+            const user = getUserData();
+            
+            // Get name parts
+            const nameParts = user.name.split(' ');
+            const initials = nameParts.map(n => n[0]).join('').toUpperCase();
+
+            // Populate text elements
+            document.getElementById('userName').textContent = user.name;
+            
+            // Populate the user avatar
+            const navAvatarContainer = document.querySelector('.w-8.h-8.bg-blue-600');
+            
+            if (user.profileImage && user.profileImage.startsWith('data:image')) {
+                navAvatarContainer.innerHTML = `<img src="${user.profileImage}" alt="User Avatar" class="w-full h-full object-cover rounded-full">`;
+                navAvatarContainer.classList.remove('bg-blue-600');
+            } else {
+                navAvatarContainer.innerHTML = `<span class="text-white font-semibold text-sm">${initials}</span>`;
+            }
+        }
+
+        // Dropdown functions
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (!menu) return;
+            menu.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const button = event.target.closest('button');
+            
+            if (!button || !button.onclick || button.onclick.toString().indexOf('toggleDropdown') === -1) {
+                dropdown.classList.add('hidden');
+            }
+
+            // Close mobile menu when clicking on a link
+            if (event.target.closest('#mobileMenu a')) {
+                const menu = document.getElementById('mobileMenu');
+                if (menu) menu.classList.add('hidden');
+            }
+        });
+
+        // Logout function with animation and redirect
+        function logout() {
+            const overlay = document.getElementById('logoutOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1200);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-left, .animate-fade-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add hover effects to service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUser();
+        });
+    </script>
+</body>
+</html>
