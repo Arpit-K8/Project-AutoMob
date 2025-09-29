@@ -79,6 +79,13 @@
             visibility: visible;
             animation: fadeIn 0.3s ease-out;
         }
+        /* Responsive Lottie sizing */
+        .lottie-hero {
+            width: 100%;
+            max-width: 470px;
+            height: auto;
+            aspect-ratio: 47 / 45; /* Approx preserve */
+        }
     </style>
     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
 </head>
@@ -93,12 +100,28 @@
                         <span class="text-xl font-bold italic text-gray-900"><span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span></span>
                     </div>
                 </div>
-                <div class="flex items-center space-x-8">
+                <div class="hidden md:flex items-center space-x-8">
                     <a href="Home.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium protected-link">Home</a>
                     <a href="services.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium protected-link">Services</a>
                     <a href="Booking.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium protected-link">Book Now</a>
                     <a href="bookingHistory.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium protected-link">History</a>
                     <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login</a>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden border-t border-gray-100">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="Home.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 protected-link">Home</a>
+                    <a href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 protected-link">Services</a>
+                    <a href="Booking.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 protected-link">Book Now</a>
+                    <a href="bookingHistory.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 protected-link">History</a>
+                    <a href="login.html" class="block px-3 py-2 rounded-md text-base font-semibold text-white bg-blue-600 hover:bg-blue-700">Login</a>
                 </div>
             </div>
         </div>
@@ -153,9 +176,8 @@
                 
                 <div class="relative flex justify-center items-center animate-fade-in-right">
                     <dotlottie-wc 
-                        class="elements transform scale-150" 
+                        class="elements transform md:scale-150 lottie-hero" 
                         src="https://lottie.host/31b038ab-5a54-43a1-bad6-0809ba9c7bee/pARdV6I1f6.lottie" 
-                        style="width: 470px; height: 450px;" 
                         speed="1" 
                         autoplay 
                         loop
@@ -331,6 +353,16 @@
     </footer>
 
     <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (!menu) return;
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
         // Show login popup
         function showLoginPopup() {
             const popup = document.getElementById('loginPopup');
@@ -356,13 +388,21 @@
             showLoginPopup();
         }
 
-        // Handle clicks on protected links in navbar
-        document.querySelectorAll('.protected-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                showLoginPopup();
+        // Handle clicks on protected links in navbar and mobile menu
+        function wireProtectedLinks() {
+            document.querySelectorAll('.protected-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoginPopup();
+                    // Close mobile menu after click
+                    const menu = document.getElementById('mobileMenu');
+                    if (menu && !menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                    }
+                });
             });
-        });
+        }
+        wireProtectedLinks();
 
         // Close popup when clicking outside
         document.getElementById('loginPopup').addEventListener('click', function(e) {
