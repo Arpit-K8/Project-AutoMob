@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid/Electric Vehicle Services - MechXpress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'fade-in-left': 'fadeInLeft 0.8s ease-out 0.2s both',
+                        'fade-in-right': 'fadeInRight 0.8s ease-out 0.4s both',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'slide-in': 'slideIn 0.8s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .IMG1{
+            height: 400px;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .eco-card {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+        .tech-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <img src="Image/Logo.png" alt="Logo" class="h-8 w-auto object-contain">
+                    <span class="text-xl font-bold italic text-gray-900">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="Home.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Home</a>
+                    <a href="Home.html#services" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Services</a>
+                    <a href="Booking.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Bookings</a>
+                    <a href="bookingHistory.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">History</a>
+                    <a href="Reports.html" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Reports</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button aria-label="Toggle menu" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- User Profile & Logout -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden xl:block text-gray-700">
+                        <span class="text-sm">Hi, <span id="userName" class="font-semibold text-blue-600">John Doe</span></span>
+                    </div>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all" onclick="toggleDropdown()">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm" id="userInitials">JD</span>
+                            </div>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                            <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200">
+                <div class="py-3 space-y-1">
+                    <a href="Home.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="HomeHome" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Services</a>
+                    <a href="Booking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Bookings</a>
+                    <a href="bookingHistory.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">History</a>
+                    <a href="Reports.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Reports</a>
+                    <hr class="border-gray-200">
+                    <button onclick="logout()" class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="hero-bg rounded-2xl p-8 md:p-12 mb-12 text-white animate-fade-in-up">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="lg:w-1/2 mb-8 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        Hybrid & Electric Vehicle Services
+                    </h1>
+                    <p class="text-xl opacity-90 mb-8 leading-relaxed">
+                        Specialized maintenance for hybrid and electric vehicles including battery health checks, charging system diagnostics, and eco-friendly service solutions.
+                    </p>
+                    <div class="flex items-center space-x-4 text-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            EV Specialists
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Eco-Friendly
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 flex justify-center">
+                    <img src="Image/ElectGIF.gif" alt="Hybrid and Electric Vehicle" class="w-full max-w-md object-cover rounded-lg shadow-lg float">   
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Overview -->
+        <div class="mb-16 animate-fade-in-left">
+            <div class="bg-white rounded-xl shadow-lg p-8 md:p-12">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-1/2 mb-8 lg:mb-0 lg:pr-8">
+                        <img src="Image/HybridCare.png" alt="Hybrid Care" class="w-full IMG1 object-cover rounded-lg shadow-md">
+                    </div>
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Expert EV & Hybrid Care</h2>
+                        <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+                            Electric and hybrid vehicles require specialized knowledge and equipment. Our certified EV technicians provide comprehensive maintenance services tailored to your vehicle's unique electric and hybrid systems, ensuring optimal performance, efficiency, and battery longevity.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>Certified EV Technicians:</strong> Specialized training in electric vehicle systems</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>Advanced Diagnostics:</strong> Latest EV diagnostic equipment and software</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mt-1">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700"><strong>Eco-Conscious:</strong> Sustainable practices and environmentally friendly solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EV System Types -->
+        <div class="mb-16 animate-fade-in-right">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Vehicle Types We Service</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Full Electric -->
+                <div class="eco-card rounded-xl p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Battery Electric (BEV)</h3>
+                    <p class="text-gray-700 text-sm">Fully electric vehicles powered entirely by high-voltage battery systems</p>
+                </div>
+
+                <!-- Plug-in Hybrid -->
+                <div class="eco-card rounded-xl p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4 4 4 0 004-4V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Plug-in Hybrid (PHEV)</h3>
+                    <p class="text-gray-700 text-sm">Hybrid vehicles with rechargeable batteries and gasoline engines</p>
+                </div>
+
+                <!-- Hybrid -->
+                <div class="eco-card rounded-xl p-6 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Hybrid Electric (HEV)</h3>
+                    <p class="text-gray-700 text-sm">Traditional hybrids with regenerative braking and electric assist</p>
+                </div>
+
+                <!-- Mild Hybrid -->
+                <div class="eco-card rounded-xl p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Mild Hybrid (MHEV)</h3>
+                    <p class="text-gray-700 text-sm">Vehicles with starter-generator systems for improved efficiency</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our EV/Hybrid Services -->
+        <div class="mb-16 animate-fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">Comprehensive EV & Hybrid Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Battery Health Check -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="2" y="7" width="18" height="10" rx="2" ry="2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="22" y1="10" x2="22" y2="14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Battery Health Assessment</h3>
+                    <p class="text-base text-gray-600 mb-4">Comprehensive battery diagnostics including capacity testing, cell balance analysis, and degradation assessment.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• State of health (SOH) testing</li>
+                        <li>• Cell voltage balance check</li>
+                        <li>• Capacity degradation analysis</li>
+                        <li>• Battery cooling system inspection</li>
+                    </ul>
+                </div>
+
+                <!-- Charging System Service -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Charging System Diagnostics</h3>
+                    <p class="text-base text-gray-600 mb-4">Professional charging system inspection, onboard charger testing, and charging port service.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Onboard charger diagnostics</li>
+                        <li>• Charging port inspection</li>
+                        <li>• DC fast-charge capability test</li>
+                        <li>• Charging cable assessment</li>
+                    </ul>
+                </div>
+
+                <!-- High Voltage System -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">High Voltage System Service</h3>
+                    <p class="text-base text-gray-600 mb-4">Safe high-voltage system inspection, insulation testing, and electrical component diagnostics.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• HV system safety inspection</li>
+                        <li>• Insulation resistance testing</li>
+                        <li>• Power electronics diagnostics</li>
+                        <li>• HV cable integrity check</li>
+                    </ul>
+                </div>
+
+                <!-- Electric Motor Service -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Electric Motor Service</h3>
+                    <p class="text-base text-gray-600 mb-4">Electric motor diagnostics, performance testing, and cooling system maintenance for optimal efficiency.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Motor performance analysis</li>
+                        <li>• Inverter diagnostics</li>
+                        <li>• Motor cooling system service</li>
+                        <li>• Regenerative braking test</li>
+                    </ul>
+                </div>
+
+                <!-- Hybrid System Service -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10v4h2v2a2 2 0 002 2h2v2h2v-2h4v2h2v-2h2a2 2 0 002-2v-4h-2v-2a2 2 0 00-2-2h-2V6h-2v2H9V6H7v2H5a2 2 0 00-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Hybrid System Integration</h3>
+                    <p class="text-base text-gray-600 mb-4">Complete hybrid system diagnostics including engine-motor coordination and power management testing.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Power split device inspection</li>
+                        <li>• Engine-motor coordination test</li>
+                        <li>• Hybrid control module diagnostics</li>
+                        <li>• Energy management analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Thermal Management -->
+                <div class="service-card bg-white rounded-xl shadow-lg p-6 transition-all duration-300">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 14.76V5a2 2 0 10-4 0v9.76a4 4 0 104 0zM12 19h.01" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Thermal Management System</h3>
+                    <p class="text-base text-gray-600 mb-4">Battery and motor cooling system service to maintain optimal operating temperatures for longevity.</p>
+                    <ul class="text-base text-gray-500 space-y-1 font-normal">
+                        <li>• Battery cooling system flush</li>
+                        <li>• Thermal management diagnostics</li>
+                        <li>• Coolant condition testing</li>
+                        <li>• Temperature sensor verification</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EV Service Process -->
+        <div class="mb-16 animate-fade-in-left">
+            <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Our EV Service Process</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Safety Assessment</h3>
+                    <p class="text-gray-600">High-voltage system safety check and proper isolation procedures before service begins.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Diagnostic Scan</h3>
+                    <p class="text-gray-600">Advanced EV-specific diagnostic scanning of battery, motor, and power electronics systems.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">System Service</h3>
+                    <p class="text-gray-600">Professional maintenance of electric and hybrid components using specialized tools and procedures.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-lg">4</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Performance Verification</h3>
+                    <p class="text-gray-600">Test drive and system verification to ensure optimal electric vehicle performance.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EV Technology & Expertise -->
+        <div class="mb-16 animate-fade-in-right">
+            <div class="bg-gray-100 rounded-2xl p-8 md:p-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">EV Technology & Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.602-4.777a4.5 4.5 0 01-5.953 2.427l-.61-.09A23.502 23.502 0 0112 5.5c-1.686 0-3.307.17-4.842.477l-.614.09a4.5 4.5 0 01-5.949-2.427 4.5 4.5 0 011.918-5.816l.642-.283a24.601 24.601 0 0117.69 0l.642.283a4.5 4.5 0 011.918 5.816z"></path>
+                        </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Certified EV Technicians</h3>
+                        <p class="text-gray-600">Specialized training and certification in electric vehicle systems and high-voltage safety.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Advanced Diagnostic Tools</h3>
+                        <p class="text-gray-600">Latest EV diagnostic equipment and manufacturer-specific software for accurate analysis.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Eco-Friendly Practices</h3>
+                        <p class="text-gray-600">Sustainable service methods and responsible disposal of electric vehicle components.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battery Care & Maintenance -->
+        <div class="mb-16 animate-fade-in-up">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-8 md:p-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Battery Care & Maintenance Tips</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Extend Battery Life</h3>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-green-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Keep battery charge between 20-80% for daily use</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-green-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Avoid frequent DC fast charging when possible</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-green-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Park in moderate temperatures when available</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-green-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Schedule regular battery health assessments</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Charging Best Practices</h3>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-blue-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span>Use Level 2 charging for regular daily charging</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-blue-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span>Precondition battery before fast charging</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-blue-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span>Avoid charging to 100% unless needed for trips</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-blue-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span>Inspect charging cables and ports regularly</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <h4 class="font-bold text-gray-900 mb-2">Battery Warranty</h4>
+                            <p class="text-2xl font-bold text-green-600">8-10 Years</p>
+                            <p class="text-gray-600 text-sm">Typical manufacturer coverage</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <h4 class="font-bold text-gray-900 mb-2">Expected Life</h4>
+                            <p class="text-2xl font-bold text-blue-600">15-20 Years</p>
+                            <p class="text-gray-600 text-sm">With proper maintenance</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <h4 class="font-bold text-gray-900 mb-2">Capacity Retention</h4>
+                            <p class="text-2xl font-bold text-purple-600">70-80%</p>
+                            <p class="text-gray-600 text-sm">After 8 years typical usage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EV Service Packages -->
+        <div class="mb-16 animate-fade-in-left">
+            <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">EV & Hybrid Service Packages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Basic Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">EV Health Check</h3>
+                    <p class="text-3xl font-bold text-green-600 mb-6">₹999</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Battery health assessment</li>
+                        <li>• Charging system inspection</li>
+                        <li>• Electric motor diagnostics</li>
+                        <li>• High-voltage safety check</li>
+                        <li>• Detailed service report</li>
+                    </ul>
+                    <button class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+
+                <!-- Complete Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center border-2 border-blue-200 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">RECOMMENDED</span>
+                    </div>
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Complete EV Service</h3>
+                    <p class="text-3xl font-bold text-blue-600 mb-6">₹2,499</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Everything in Health Check</li>
+                        <li>• Thermal management service</li>
+                        <li>• Battery cooling system flush</li>
+                        <li>• Brake system inspection (regen)</li>
+                        <li>• Software updates check</li>
+                        <li>• 12V battery service</li>
+                    </ul>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Premium Care</h3>
+                    <p class="text-3xl font-bold text-purple-600 mb-6">₹3,999</p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>• Everything in Complete Service</li>
+                        <li>• Comprehensive battery analysis</li>
+                        <li>• Power electronics diagnostics</li>
+                        <li>• Range optimization service</li>
+                        <li>• Annual maintenance package</li>
+                        <li>• Priority service & support</li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        Select Package
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Service Section -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-700 rounded-2xl p-8 md:p-12 text-white text-center animate-fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Drive the Future with Confidence</h2>
+            <p class="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+                Your electric or hybrid vehicle deserves specialized care from certified EV technicians. Schedule your service today and experience expert maintenance that maximizes performance, efficiency, and battery life.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="Booking.html" class="bg-white text-green-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Book EV Service
+                </a>
+                <a href="tel:8945612378" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-green-600 font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                    Call: 89456 12378
+                </a>
+            </div>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Certified EV Experts</h4>
+                    <p class="text-sm opacity-90">Specialized electric vehicle training</p>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Advanced Equipment</h4>
+                    <p class="text-sm opacity-90">Latest EV diagnostic technology</p>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">Eco-Friendly Service</h4>
+                    <p class="text-sm opacity-90">Sustainable maintenance practices</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 italic">
+                        <span>Mech</span><span class="text-orange-600 text-2xl">X</span><span class="text-orange-600">press</span>
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed">Your trusted automotive service partner providing excellence in car care and maintenance with professional expertise.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="BrakeSer.html" class="hover:text-white transition-colors">Brake Service</a></li>
+                        <li><a href="PrevMain.html" class="hover:text-white transition-colors">Preventive Maintenance</a></li>
+                        <li><a href="BodyRep.html" class="hover:text-white transition-colors">Body Repair</a></li>
+                        <li><a href="Home.html" class="hover:text-white transition-colors">Emergency Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="Booking.html" class="hover:text-white transition-colors">Book Service</a></li>
+                        <li><a href="Reports.html" class="hover:text-white transition-colors">Reports</a></li>
+                        <li><a href="Contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            info@mechxpress.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            +1 (555) 123-4567
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            123 Auto Street, Service City
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 MechXpress. All rights reserved. | Your trusted automotive service partner</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logout Overlay -->
+    <div id="logoutOverlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm hidden items-center justify-center z-[9999]">
+        <div class="flex flex-col items-center">
+            <div class="h-14 w-14 rounded-full border-4 border-blue-600 border-t-transparent animate-spin mb-4"></div>
+            <p class="text-lg font-semibold text-blue-700">Signing you out...</p>
+        </div>
+    </div>
+
+    <script>
+        // Get user data from localStorage or use defaults
+        function getUserData() {
+            const defaultUser = {
+                name: "John Doe",
+                profileImage: null
+            };
+            const storedUser = localStorage.getItem('mechXpressUser');
+            return storedUser ? JSON.parse(storedUser) : defaultUser;
+        }
+
+        // Initialize user data in the interface
+        function initializeUser() {
+            const user = getUserData();
+            
+            // Get name parts
+            const nameParts = user.name.split(' ');
+            const initials = nameParts.map(n => n[0]).join('').toUpperCase();
+
+            // Populate text elements
+            document.getElementById('userName').textContent = user.name;
+            
+            // Populate the user avatar
+            const navAvatarContainer = document.querySelector('.w-8.h-8.bg-blue-600');
+            
+            if (user.profileImage && user.profileImage.startsWith('data:image')) {
+                navAvatarContainer.innerHTML = `<img src="${user.profileImage}" alt="User Avatar" class="w-full h-full object-cover rounded-full">`;
+                navAvatarContainer.classList.remove('bg-blue-600');
+            } else {
+                navAvatarContainer.innerHTML = `<span class="text-white font-semibold text-sm">${initials}</span>`;
+            }
+        }
+
+        // Dropdown functions
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (!menu) return;
+            menu.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const button = event.target.closest('button');
+            
+            if (!button || !button.onclick || button.onclick.toString().indexOf('toggleDropdown') === -1) {
+                dropdown.classList.add('hidden');
+            }
+
+            // Close mobile menu when clicking on a link
+            if (event.target.closest('#mobileMenu a')) {
+                const menu = document.getElementById('mobileMenu');
+                if (menu) menu.classList.add('hidden');
+            }
+        });
+
+        // Logout function with animation and redirect
+        function logout() {
+            const overlay = document.getElementById('logoutOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1200);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-left, .animate-fade-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add hover effects to service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUser();
+        });
+    </script>
+</body>
+</html>
