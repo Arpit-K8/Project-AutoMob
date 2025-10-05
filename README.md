@@ -1,4 +1,4 @@
-# MechXpress - AutoMob Mechanic Platform
+# [MechXpress - AutoMob Mechanic Platform](./index.html)
 
 Welcome to MechXpress, a modern web platform for premium automobile care and service management. This project provides a complete solution for customers and admins to book, manage, and track automotive services with a beautiful, responsive UI.
 
