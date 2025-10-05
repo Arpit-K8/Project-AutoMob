@@ -115,8 +115,10 @@ Welcome to MechXpress, a modern web platform for premium automobile care and ser
 
 4. **Navigation**:
    - Start from `index.html` (landing page)
-   - Use `login.html` to access user features
-   - Admin features available through admin login
+   - Use `login.html` to access user features {Sign in first then login}
+   - Admin features are available through admin login:
+      - **Admin ID:** `admin123`
+      - **Password:** `secureAdminPass2025`
 
 ## File Organization
 
