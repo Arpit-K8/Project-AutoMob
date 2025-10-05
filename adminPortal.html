@@ -278,14 +278,16 @@
     </footer>
 
     <script>
-        // Simulated admin check
+        // Admin access check
         function checkAdminAccess() {
-            // In a real application, this would check a backend session or token
-            // const isAdmin = sessionStorage.getItem('isAdmin');
-            // if (!isAdmin) {
-            //     alert('Unauthorized access. Redirecting to login.');
-            //     window.location.href = 'login.html';
-            // }
+            // Check if user has admin access
+            const isAdmin = sessionStorage.getItem('isAdmin');
+            if (!isAdmin || isAdmin !== 'true') {
+                alert('Unauthorized access. Please login as admin first.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
         }
 
         function toggleMobileMenu() {
@@ -297,7 +299,9 @@
         }
 
         function logout() {
+            // Clear admin session and redirect to home
             sessionStorage.removeItem('isAdmin');
+            localStorage.removeItem('mechXpressAdmin'); // Also clear admin profile data if exists
             window.location.href = 'index.html';
         }
 

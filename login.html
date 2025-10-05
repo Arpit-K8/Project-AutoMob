@@ -406,8 +406,9 @@
                     `;
                     submitButton.className = submitButton.className.replace('bg-yellow-400', 'bg-green-500');
 
-                    // Redirect to admin portal
+                    // Set admin session and redirect to admin portal
                     setTimeout(() => {
+                        sessionStorage.setItem('isAdmin', 'true');
                         // alert('Admin login successful! Redirecting to admin portal...');
                         window.location.href = 'adminPortal.html';
                     }, 1000);

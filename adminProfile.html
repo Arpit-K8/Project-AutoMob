@@ -179,6 +179,17 @@
     </div>
 
     <script>
+        // Admin access check
+        function checkAdminAccess() {
+            const isAdmin = sessionStorage.getItem('isAdmin');
+            if (!isAdmin || isAdmin !== 'true') {
+                alert('Unauthorized access. Please login as admin first.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
         // --- DATA MANAGEMENT ---
         function getAdminData() {
             const defaultAdmin = {
@@ -239,6 +250,7 @@
 
         // --- EVENT LISTENERS ---
         document.addEventListener('DOMContentLoaded', function() {
+            checkAdminAccess();
             loadAdminData();
 
             // Form Submission
